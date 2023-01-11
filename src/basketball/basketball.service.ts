@@ -104,7 +104,7 @@ export class BasketballService {
             } else {
               const resGame = await queryRunner.manager.save(BasketballGame, {
                 ...game,
-                league: existGame,
+                league: existLeague,
               });
             }
           }
