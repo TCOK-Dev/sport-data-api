@@ -43,6 +43,8 @@ export class CronJobsService {
         const eventText =
           document.querySelector('div.no-events-available')?.innerHTML ?? '';
 
+        console.log(eventText);
+
         if (eventText === TEXT_NO_EVENT) {
           location.reload();
         }
