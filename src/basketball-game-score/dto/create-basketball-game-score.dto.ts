@@ -43,7 +43,7 @@ export class CreateBasketballGameScoreDto {
 
   @IsString()
   @IsOptional()
-  homeOverUnder: string;
+  homeOverUnder?: string;
 
   // game: CreateBasketballGameDto;
 }

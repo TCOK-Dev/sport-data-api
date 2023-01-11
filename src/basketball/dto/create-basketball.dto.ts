@@ -6,5 +6,5 @@ export class CreateBasketballDto {
   title: string;
 
   @IsOptional()
-  games: CreateBasketballGameDto[];
+  games?: CreateBasketballGameDto[];
 }

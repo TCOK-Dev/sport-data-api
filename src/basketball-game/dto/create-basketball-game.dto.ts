@@ -50,5 +50,5 @@ export class CreateBasketballGameDto {
   // basketball: CreateBasketballDto;
 
   @IsOptional()
-  scores: CreateBasketballGameScoreDto[];
+  scores?: CreateBasketballGameScoreDto[];
 }
