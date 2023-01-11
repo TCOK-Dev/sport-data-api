@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBasketballInput } from './dto/create-basketball.input';
-import { UpdateBasketballInput } from './dto/update-basketball.input';
+import { CreateBasketballDto } from './dto/create-basketball.dto';
+import { UpdateBasketballDto } from './dto/update-basketball.dto';
 
 @Injectable()
 export class BasketballService {
-  create(createBasketballInput: CreateBasketballInput) {
+  create(createBasketballDto: CreateBasketballDto) {
     return 'This action adds a new basketball';
   }
 
@@ -16,7 +16,7 @@ export class BasketballService {
     return `This action returns a #${id} basketball`;
   }
 
-  update(id: number, updateBasketballInput: UpdateBasketballInput) {
+  update(id: number, updateBasketballDto: UpdateBasketballDto) {
     return `This action updates a #${id} basketball`;
   }
 

@@ -1,9 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import { BasketballService } from 'src/basketball/basketball.service';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import { LINK_BASKETBALL, TEXT_NO_EVENT } from 'src/utils/constants.utils';
+import { BasketballService } from 'src/basketball/basketball.service';
+import { Basketball } from 'src/basketball/entities/basketball.entity';
 import { extractLiveBasketball } from 'src/extracts/basketball.extract';
+import { LINK_BASKETBALL, TEXT_NO_EVENT } from 'src/utils/constants.utils';
 
 const GET_DATA = 'GET_DATA';
 
@@ -11,7 +12,10 @@ const GET_DATA = 'GET_DATA';
 export class CronJobsService {
   private browser: Browser;
   private page: Page;
-  constructor() {
+  constructor(
+    private schedulerRegistry: SchedulerRegistry,
+    private basketballService: BasketballService,
+  ) {
     this.initBrowser();
   }
 
@@ -44,13 +48,13 @@ export class CronJobsService {
   }
 
   @Cron(CronExpression.EVERY_5_SECONDS, { name: GET_DATA })
-  async getData() {
-    return await this.getBasketball();
+  async grabSports() {
+    const basketballData = await this.getBasketball();
+    
   }
 
   async getBasketball() {
     const ret = await extractLiveBasketball(this.browser, this.page);
-    console.log(ret?.[0]?.clock, ret.length);
     return ret;
   }
 }

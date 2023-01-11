@@ -1,37 +1,50 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { BasketballGame } from 'src/basketball-game/entities/basketball-game.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
-@ObjectType()
+@Entity()
 export class BasketballGameScore {
-  @Field(() => String, { nullable: true })
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ nullable: true })
   title: string;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   quarter: string;
 
-  @Field(() => Number, { nullable: true })
+  @Column({ nullable: true })
   clock: number;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   awayTeam: string;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   homeTeam: string;
 
-  @Field(() => Number, { nullable: true })
+  @Column({ nullable: true })
   awayScore: number;
 
-  @Field(() => Number, { nullable: true })
+  @Column({ nullable: true })
   homeScore: number;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   awaySpread: string;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   homeSpread: string;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   awayOverUnder: string;
 
-  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   homeOverUnder: string;
+
+  @ManyToOne(() => BasketballGame, (game) => game.scores)
+  game: BasketballGame;
 }
