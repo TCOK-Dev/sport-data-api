@@ -14,6 +14,8 @@ export class BasketballService {
   constructor(
     @InjectRepository(Basketball)
     private readonly basketballRepository: Repository<Basketball>,
+    private readonly basketballGameRepository: Repository<BasketballGame>,
+    private readonly basketballGameScoreRepository: Repository<BasketballGameScore>,
     private dataSource: DataSource,
   ) {}
 
@@ -32,7 +34,7 @@ export class BasketballService {
 
     try {
       for (let leagueIndex = 0; leagueIndex < data.length; leagueIndex++) {
-        const league = data[leagueIndex];
+        const league = this.basketballRepository.create(data[leagueIndex]);
         const existLeague = await queryRunner.manager.findOne(Basketball, {
           where: { title: league.title },
         });
@@ -43,7 +45,9 @@ export class BasketballService {
             gameIndex < league.games.length;
             gameIndex++
           ) {
-            const game = league.games[gameIndex];
+            const game = this.basketballGameRepository.create(
+              league.games[gameIndex],
+            );
 
             const existGame = await queryRunner.manager.findOne(
               BasketballGame,
@@ -62,7 +66,9 @@ export class BasketballService {
                 scoreIndex < game.scores.length;
                 scoreIndex++
               ) {
-                const score = game.scores[scoreIndex];
+                const score = this.basketballGameScoreRepository.create(
+                  game.scores[scoreIndex],
+                );
 
                 const existScore = await queryRunner.manager.findOne(
                   BasketballGameScore,
