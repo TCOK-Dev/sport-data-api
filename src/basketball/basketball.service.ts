@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BasketballGameScore } from 'src/basketball-game-score/entities/basketball-game-score.entity';
 import { BasketballGame } from 'src/basketball-game/entities/basketball-game.entity';
@@ -9,6 +9,8 @@ import { Basketball } from './entities/basketball.entity';
 
 @Injectable()
 export class BasketballService {
+  private readonly logger = new Logger(BasketballService.name);
+
   constructor(
     @InjectRepository(Basketball)
     private readonly basketballRepository: Repository<Basketball>,
@@ -102,6 +104,7 @@ export class BasketballService {
       }
     } catch (err) {
       // since we have errors lets rollback the changes we made
+      this.logger.error(err);
       await queryRunner.rollbackTransaction();
     } finally {
       // you need to release a queryRunner which was manually instantiated
