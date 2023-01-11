@@ -62,9 +62,7 @@ export class CronJobsService {
 
     const basketballData = await this.getBasketball();
 
-    for (let i = 0; i < basketballData.length; i++) {
-      const dataItem = basketballData[i];
-
+    const leagues = basketballData.map((dataItem) => {
       const league: CreateBasketballDto = {
         title: dataItem.title,
         games: basketballData
@@ -108,10 +106,11 @@ export class CronJobsService {
           }),
       };
 
-      const ret = await this.basketballService.save(league);
+      return league;
+    });
 
-      this.logger.log('save league', JSON.stringify(ret));
-    }
+    const ret = await this.basketballService.multiSave(leagues);
+    this.logger.log('Saved league:', ret.length);
   }
 
   async getBasketball() {
