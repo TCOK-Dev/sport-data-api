@@ -12,17 +12,18 @@ export class BasketballService {
     private readonly basketballRepository: Repository<Basketball>,
   ) {}
 
-  create(createBasketballDto: CreateBasketballDto) {
+  create(data: CreateBasketballDto) {
     return 'This action adds a new basketball';
   }
 
-  async save(createBasketballDto: CreateBasketballDto) {
+  async save(data: CreateBasketballDto) {
     return '';
   }
 
   async multiSave(data: CreateBasketballDto[]) {
     const leagues = await this.basketballRepository.upsert(data, {
       conflictPaths: { title: true },
+      skipUpdateIfNoValuesChanged: true,
     });
     return leagues;
   }

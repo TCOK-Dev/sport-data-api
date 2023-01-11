@@ -1,11 +1,5 @@
 import { BasketballGame } from 'src/basketball-game/entities/basketball-game.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class BasketballGameScore {
