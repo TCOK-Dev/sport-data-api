@@ -8,6 +8,6 @@ import { BasketballGame } from './entities/basketball-game.entity';
   imports: [TypeOrmModule.forFeature([BasketballGame])],
   controllers: [BasketballGameController],
   providers: [BasketballGameService],
-  exports: [TypeOrmModule],
+  exports: [BasketballGameService],
 })
 export class BasketballGameModule {}
