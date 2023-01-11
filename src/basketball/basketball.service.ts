@@ -92,25 +92,27 @@ export class BasketballService {
 
                 if (existScore) {
                 } else {
-                  const resScore = await queryRunner.manager.save({
-                    ...score,
-                    game: existGame,
-                  });
+                  const resScore = await queryRunner.manager.save(
+                    BasketballGameScore,
+                    {
+                      ...score,
+                      game: existGame,
+                    },
+                  );
                 }
               }
             } else {
-              const resGame = await queryRunner.manager.save({
+              const resGame = await queryRunner.manager.save(BasketballGame, {
                 ...game,
                 league: existGame,
               });
             }
           }
         } else {
-          const resLeague = await queryRunner.manager.save(league);
+          const resLeague = await queryRunner.manager.save(Basketball, league);
         }
-
-        await queryRunner.commitTransaction();
       }
+      await queryRunner.commitTransaction();
     } catch (err) {
       // since we have errors lets rollback the changes we made
       this.logger.error(err);
