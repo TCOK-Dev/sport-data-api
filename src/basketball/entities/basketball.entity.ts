@@ -6,7 +6,7 @@ export class Basketball {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: true })
   title: string;
 
   @OneToMany(() => BasketballGame, (game) => game.basketball)
