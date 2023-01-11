@@ -8,6 +8,7 @@ import { BasketballService } from 'src/basketball/basketball.service';
 import { CreateBasketballDto } from 'src/basketball/dto/create-basketball.dto';
 import { extractLiveBasketball } from 'src/extracts/basketball.extract';
 import { LINK_BASKETBALL, TEXT_NO_EVENT } from 'src/utils/constants.utils';
+import striptags from 'striptags';
 
 const GET_DATA = 'GET_DATA';
 
@@ -40,8 +41,9 @@ export class CronJobsService {
     //   reload if no data
     await this.page?.evaluate(
       ({ TEXT_NO_EVENT }) => {
-        const eventText =
-          document.querySelector('div.no-events-available')?.innerHTML ?? '';
+        const eventText = striptags(
+          document.querySelector('div.no-events-available')?.innerHTML ?? '',
+        );
 
         if (eventText === TEXT_NO_EVENT) {
           location.reload();

@@ -1,13 +1,10 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
-
-const COUNT_LIMIT = 20;
+import { Browser, Page } from 'puppeteer';
 
 export const extractLiveBasketball = async (browser: Browser, page: Page) => {
   const liveData = await page.evaluate(() => {
     return Array.from(
       document.querySelectorAll('.happening-now-bucket .grouped-events'),
     ).map((group) => {
-      console.log(group);
       const title =
         group.querySelector('.league-header-collapsible__description')
           ?.innerHTML ?? '';
