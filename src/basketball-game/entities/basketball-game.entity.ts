@@ -47,7 +47,7 @@ export class BasketballGame {
   homeOverUnder: string;
 
   @ManyToOne(() => Basketball, (score) => score.games)
-  basketball: Basketball;
+  league: Basketball;
 
   @OneToMany(() => BasketballGameScore, (score) => score.game)
   scores: BasketballGameScore[];
