@@ -21,7 +21,10 @@ export class BasketballService {
   }
 
   async multiSave(data: CreateBasketballDto[]) {
-    return await this.basketballRepository.save(data);
+    const leagues = await this.basketballRepository.upsert(data, {
+      conflictPaths: { title: true },
+    });
+    return leagues;
   }
 
   findAll() {
