@@ -66,7 +66,7 @@ export const extractLiveBasketball = async (browser: Browser, page: Page) => {
 
           const strClock2num = (str = '') => {
             const splitted = str.split(':');
-            return toNumber(splitted?.[0]) + toNumber(splitted?.[1]) / 60;
+            return toNumber(splitted?.[0]) * 60 + toNumber(splitted?.[1]);
           };
 
           return {
