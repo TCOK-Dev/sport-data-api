@@ -49,8 +49,6 @@ export class BasketballGame {
   @ManyToOne(() => Basketball, (score) => score.games)
   basketball: Basketball;
 
-  @OneToMany(() => BasketballGameScore, (score) => score.game, {
-    cascade: true,
-  })
+  @OneToMany(() => BasketballGameScore, (score) => score.game)
   scores: BasketballGameScore[];
 }

@@ -21,10 +21,13 @@ export class BasketballService {
   }
 
   async multiSave(data: CreateBasketballDto[]) {
-    const leagues = await this.basketballRepository.upsert(data, {
-      conflictPaths: { title: true },
-      skipUpdateIfNoValuesChanged: true,
-    });
+    const leagues = await this.basketballRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Basketball)
+      .values(data)
+      .orUpdate(['title'], ['title'])
+      .execute();
     return leagues;
   }
 
