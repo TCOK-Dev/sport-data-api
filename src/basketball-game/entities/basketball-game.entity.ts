@@ -19,7 +19,7 @@ export class BasketballGame {
   @Column({ nullable: true })
   quarter: string;
 
-  @Column({ nullable: true })
+  @Column('decimal', { nullable: true, precision: 5, scale: 2 })
   clock: number;
 
   @Column({ nullable: true })
