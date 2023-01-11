@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { CreateBasketballGameScoreDto } from 'src/basketball-game-score/dto/create-basketball-game-score.dto';
@@ -6,7 +6,6 @@ import { BasketballGameService } from 'src/basketball-game/basketball-game.servi
 import { CreateBasketballGameDto } from 'src/basketball-game/dto/create-basketball-game.dto';
 import { BasketballService } from 'src/basketball/basketball.service';
 import { CreateBasketballDto } from 'src/basketball/dto/create-basketball.dto';
-import { Basketball } from 'src/basketball/entities/basketball.entity';
 import { extractLiveBasketball } from 'src/extracts/basketball.extract';
 import { LINK_BASKETBALL, TEXT_NO_EVENT } from 'src/utils/constants.utils';
 
@@ -14,8 +13,11 @@ const GET_DATA = 'GET_DATA';
 
 @Injectable()
 export class CronJobsService {
+  private readonly logger = new Logger(CronJobsService.name);
+
   private browser: Browser;
   private page: Page;
+
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private basketballService: BasketballService,
@@ -54,6 +56,10 @@ export class CronJobsService {
 
   @Cron(CronExpression.EVERY_5_SECONDS, { name: GET_DATA })
   async grabSports() {
+    this.logger.warn(
+      'Cron Job<Get Sport Data> is started. This will run every 5 seconds',
+    );
+
     const basketballData = await this.getBasketball();
 
     for (let i = 0; i < basketballData.length; i++) {
@@ -102,7 +108,9 @@ export class CronJobsService {
           }),
       };
 
-      await this.basketballService.save(league);
+      const ret = await this.basketballService.save(league);
+
+      this.logger.log('save league', ret.id);
     }
   }
 

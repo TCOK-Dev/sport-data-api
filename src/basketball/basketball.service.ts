@@ -36,8 +36,6 @@ export class BasketballService {
 
       return ret;
     } catch (error) {}
-
-    return 'This action adds a new basketball';
   }
 
   findAll() {
