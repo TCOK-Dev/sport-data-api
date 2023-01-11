@@ -11,7 +11,9 @@ describe('BasketballGameScoreController', () => {
       providers: [BasketballGameScoreService],
     }).compile();
 
-    controller = module.get<BasketballGameScoreController>(BasketballGameScoreController);
+    controller = module.get<BasketballGameScoreController>(
+      BasketballGameScoreController,
+    );
   });
 
   it('should be defined', () => {

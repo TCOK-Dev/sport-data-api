@@ -1,9 +1,10 @@
-import { IsEmail } from 'class-validator';
-import { BasketballGame } from 'src/basketball-game/entities/basketball-game.entity';
+import { IsEmail, IsOptional } from 'class-validator';
+import { CreateBasketballGameDto } from 'src/basketball-game/dto/create-basketball-game.dto';
 
 export class CreateBasketballDto {
   @IsEmail()
   title: string;
 
-  games: BasketballGame[];
+  @IsOptional()
+  games: CreateBasketballGameDto[];
 }

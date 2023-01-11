@@ -16,7 +16,10 @@ export class BasketballGameScoreService {
     return `This action returns a #${id} basketballGameScore`;
   }
 
-  update(id: number, updateBasketballGameScoreDto: UpdateBasketballGameScoreDto) {
+  update(
+    id: number,
+    updateBasketballGameScoreDto: UpdateBasketballGameScoreDto,
+  ) {
     return `This action updates a #${id} basketballGameScore`;
   }
 

@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BasketballGameScoreService } from './basketball-game-score.service';
 import { CreateBasketballGameScoreDto } from './dto/create-basketball-game-score.dto';
 import { UpdateBasketballGameScoreDto } from './dto/update-basketball-game-score.dto';
 
 @Controller('basketball-game-score')
 export class BasketballGameScoreController {
-  constructor(private readonly basketballGameScoreService: BasketballGameScoreService) {}
+  constructor(
+    private readonly basketballGameScoreService: BasketballGameScoreService,
+  ) {}
 
   @Post()
   create(@Body() createBasketballGameScoreDto: CreateBasketballGameScoreDto) {
@@ -23,8 +33,14 @@ export class BasketballGameScoreController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBasketballGameScoreDto: UpdateBasketballGameScoreDto) {
-    return this.basketballGameScoreService.update(+id, updateBasketballGameScoreDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateBasketballGameScoreDto: UpdateBasketballGameScoreDto,
+  ) {
+    return this.basketballGameScoreService.update(
+      +id,
+      updateBasketballGameScoreDto,
+    );
   }
 
   @Delete(':id')

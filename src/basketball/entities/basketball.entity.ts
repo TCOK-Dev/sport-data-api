@@ -9,6 +9,6 @@ export class Basketball {
   @Column({ nullable: true })
   title: string;
 
-  @OneToMany(type => BasketballGame, game => game.basketball)
+  @OneToMany((type) => BasketballGame, (game) => game.basketball)
   games: BasketballGame[];
 }

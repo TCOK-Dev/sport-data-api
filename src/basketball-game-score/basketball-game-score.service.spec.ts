@@ -9,7 +9,9 @@ describe('BasketballGameScoreService', () => {
       providers: [BasketballGameScoreService],
     }).compile();
 
-    service = module.get<BasketballGameScoreService>(BasketballGameScoreService);
+    service = module.get<BasketballGameScoreService>(
+      BasketballGameScoreService,
+    );
   });
 
   it('should be defined', () => {
