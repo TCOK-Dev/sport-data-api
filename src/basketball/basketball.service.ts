@@ -17,12 +17,8 @@ export class BasketballService {
     private dataSource: DataSource,
   ) {}
 
-  create(data: CreateBasketballDto) {
-    return 'This action adds a new basketball';
-  }
-
-  async save(data: CreateBasketballDto) {
-    return '';
+  async create(data: CreateBasketballDto) {
+    return await this.basketballRepository.save(data);
   }
 
   async multiSave(data: CreateBasketballDto[]) {
@@ -92,24 +88,21 @@ export class BasketballService {
 
                 if (existScore) {
                 } else {
-                  const resScore = await queryRunner.manager.save(
-                    BasketballGameScore,
-                    {
-                      ...score,
-                      game: existGame,
-                    },
-                  );
+                  await queryRunner.manager.save(BasketballGameScore, {
+                    ...score,
+                    game: existGame,
+                  });
                 }
               }
             } else {
-              const resGame = await queryRunner.manager.save(BasketballGame, {
+              await queryRunner.manager.save(BasketballGame, {
                 ...game,
                 league: existLeague,
               });
             }
           }
         } else {
-          const resLeague = await queryRunner.manager.save(Basketball, league);
+          await queryRunner.manager.save(Basketball, league);
         }
       }
       await queryRunner.commitTransaction();
@@ -123,19 +116,19 @@ export class BasketballService {
     }
   }
 
-  findAll() {
-    return `This action returns all basketball`;
+  async findAll() {
+    return await this.basketballRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} basketball`;
+  async findOne(id: number) {
+    return await this.basketballRepository.findOne({ where: { id: id } });
   }
 
-  update(id: number, updateBasketballDto: UpdateBasketballDto) {
-    return `This action updates a #${id} basketball`;
+  async update(id: number, updateBasketballDto: UpdateBasketballDto) {
+    return await this.basketballRepository.update(id, updateBasketballDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} basketball`;
+  async remove(id: number) {
+    return await this.basketballRepository.delete(id);
   }
 }
