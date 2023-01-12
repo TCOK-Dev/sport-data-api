@@ -109,8 +109,8 @@ export class CronJobsService {
       return league;
     });
 
-    const ret = await this.basketballService.multiSave(leagues);
-    this.logger.log('Saved league:', leagues.length, ret);
+    await this.basketballService.multiSave(leagues);
+    this.logger.log('Saved league:' + leagues.length);
   }
 
   async getBasketball() {
