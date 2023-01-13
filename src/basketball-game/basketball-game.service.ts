@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { CreateBasketballGameDto } from './dto/create-basketball-game.dto';
 import { UpdateBasketballGameDto } from './dto/update-basketball-game.dto';
 import { BasketballGame } from './entities/basketball-game.entity';
@@ -23,8 +23,10 @@ export class BasketballGameService {
   }
 
   async findLive() {
+    const targetTime = new Date();
+
     return await this.repository.find({
-      where: { isFinished: false },
+      where: { finishAt: MoreThan(targetTime) },
     });
   }
 

@@ -1,14 +1,13 @@
 import { BasketballGameScore } from 'src/basketball-game-score/entities/basketball-game-score.entity';
 import { Basketball } from 'src/basketball/entities/basketball.entity';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToMany,
-  ManyToOne,
   CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  AfterLoad,
 } from 'typeorm';
 
 @Entity()
@@ -28,6 +27,12 @@ export class BasketballGame {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   public updatedAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  public finishAt: Date;
 
   @Column({ nullable: true })
   title: string;
@@ -67,14 +72,4 @@ export class BasketballGame {
 
   @OneToMany(() => BasketballGameScore, (score) => score.game)
   scores: BasketballGameScore[];
-
-  isFinished: boolean;
-
-  @AfterLoad()
-  getIsFinished() {
-    const finishTime = this.updatedAt;
-    finishTime.setSeconds(finishTime.getSeconds() + this.clock);
-
-    return finishTime < new Date();
-  }
 }

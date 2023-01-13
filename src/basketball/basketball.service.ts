@@ -57,11 +57,20 @@ export class BasketballService {
                 },
               },
             );
+
+            const finishAt = new Date();
+            finishAt.setSeconds(finishAt.getSeconds() + game.clock);
+
             const updatedGame = await queryRunner.manager.save(
               BasketballGame,
               existGame
-                ? { ...existGame, ...game, league: existLeague }
-                : { ...game, league: existLeague },
+                ? {
+                    ...existGame,
+                    ...game,
+                    finishAt: finishAt,
+                    league: existLeague,
+                  }
+                : { ...game, finishAt: finishAt, league: existLeague },
             );
 
             if (existGame) {
