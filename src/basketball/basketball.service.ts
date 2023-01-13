@@ -59,19 +59,20 @@ export class BasketballService {
               },
             );
 
-            const isNBA = game.quarter[1] === 'Q';
-            const isCG = game.quarter[1] === 'H';
+            const isNBA = game.quarter?.[1] === 'Q';
+            const isCG = game.quarter?.[1] === 'H';
 
             const finishAt = new Date();
             finishAt.setSeconds(
               finishAt.getSeconds() +
                 (isNBA
                   ? // quarter 12min * 4
-                    (4 - toNumber(game.quarter[0])) * 720 + game.clock
+                    (4 - toNumber(game.quarter?.[0])) * 720 + game.clock
                   : isCG
                   ? // half 20min * 2
-                    (2 - toNumber(game.quarter[0])) * 1200 + game.clock
-                  : 0),
+                    (2 - toNumber(game.quarter?.[0])) * 1200 + game.clock
+                  : 0) +
+                10,
             );
 
             const updatedGame = await queryRunner.manager.save(
