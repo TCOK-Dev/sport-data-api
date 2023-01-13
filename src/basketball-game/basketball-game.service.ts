@@ -23,7 +23,12 @@ export class BasketballGameService {
   }
 
   async findLive() {
-    return await this.repository.find({ where: { clock: MoreThan(10) } });
+    const beforeSeconds = new Date();
+    beforeSeconds.setSeconds(beforeSeconds.getSeconds() + 10);
+
+    return await this.repository.find({
+      where: { updatedAt: MoreThan(beforeSeconds) },
+    });
   }
 
   async findOne(id: number) {
