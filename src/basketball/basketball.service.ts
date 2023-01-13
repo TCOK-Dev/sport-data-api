@@ -57,6 +57,12 @@ export class BasketballService {
                 },
               },
             );
+            const updatedGame = await queryRunner.manager.save(
+              BasketballGame,
+              existGame
+                ? { ...existGame, ...game, league: existLeague }
+                : { ...game, league: existLeague },
+            );
 
             if (existGame) {
               for (
@@ -90,15 +96,10 @@ export class BasketballService {
                 } else {
                   await queryRunner.manager.save(BasketballGameScore, {
                     ...score,
-                    game: existGame,
+                    game: updatedGame,
                   });
                 }
               }
-            } else {
-              await queryRunner.manager.save(BasketballGame, {
-                ...game,
-                league: existLeague,
-              });
             }
           }
         } else {
