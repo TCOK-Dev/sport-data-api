@@ -16,30 +16,33 @@ export class BasketballGameController {
   constructor(private readonly basketballGameService: BasketballGameService) {}
 
   @Post()
-  create(@Body() createBasketballGameDto: CreateBasketballGameDto) {
-    return this.basketballGameService.create(createBasketballGameDto);
+  async create(@Body() createBasketballGameDto: CreateBasketballGameDto) {
+    return await this.basketballGameService.create(createBasketballGameDto);
   }
 
   @Get()
-  findAll() {
-    return this.basketballGameService.findAll();
+  async findAll() {
+    return await this.basketballGameService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.basketballGameService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.basketballGameService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateBasketballGameDto: UpdateBasketballGameDto,
   ) {
-    return this.basketballGameService.update(+id, updateBasketballGameDto);
+    return await this.basketballGameService.update(
+      +id,
+      updateBasketballGameDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.basketballGameService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.basketballGameService.remove(+id);
   }
 }

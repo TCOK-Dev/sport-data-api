@@ -13,12 +13,12 @@ export class BasketballService {
 
   constructor(
     @InjectRepository(Basketball)
-    private readonly basketballRepository: Repository<Basketball>,
+    private readonly repository: Repository<Basketball>,
     private dataSource: DataSource,
   ) {}
 
   async create(data: CreateBasketballDto) {
-    return await this.basketballRepository.save(data);
+    return await this.repository.save(data);
   }
 
   async multiSave(data: CreateBasketballDto[]) {
@@ -117,21 +117,21 @@ export class BasketballService {
   }
 
   async findAll() {
-    return await this.basketballRepository.find();
+    return await this.repository.find();
   }
 
   async findOne(id: number) {
-    return await this.basketballRepository.findOne({
+    return await this.repository.findOne({
       where: { id: id },
       relations: ['games.scores'],
     });
   }
 
   async update(id: number, updateBasketballDto: UpdateBasketballDto) {
-    return await this.basketballRepository.update(id, updateBasketballDto);
+    return await this.repository.update(id, updateBasketballDto);
   }
 
   async remove(id: number) {
-    return await this.basketballRepository.delete(id);
+    return await this.repository.delete(id);
   }
 }

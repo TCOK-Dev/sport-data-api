@@ -18,33 +18,37 @@ export class BasketballGameScoreController {
   ) {}
 
   @Post()
-  create(@Body() createBasketballGameScoreDto: CreateBasketballGameScoreDto) {
-    return this.basketballGameScoreService.create(createBasketballGameScoreDto);
+  async create(
+    @Body() createBasketballGameScoreDto: CreateBasketballGameScoreDto,
+  ) {
+    return await this.basketballGameScoreService.create(
+      createBasketballGameScoreDto,
+    );
   }
 
   @Get()
-  findAll() {
-    return this.basketballGameScoreService.findAll();
+  async findAll() {
+    return await this.basketballGameScoreService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.basketballGameScoreService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.basketballGameScoreService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateBasketballGameScoreDto: UpdateBasketballGameScoreDto,
   ) {
-    return this.basketballGameScoreService.update(
+    return await this.basketballGameScoreService.update(
       +id,
       updateBasketballGameScoreDto,
     );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.basketballGameScoreService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.basketballGameScoreService.remove(+id);
   }
 }

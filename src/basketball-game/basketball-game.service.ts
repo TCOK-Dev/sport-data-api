@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateBasketballGameDto } from './dto/create-basketball-game.dto';
 import { UpdateBasketballGameDto } from './dto/update-basketball-game.dto';
+import { BasketballGame } from './entities/basketball-game.entity';
 
 @Injectable()
 export class BasketballGameService {
-  create(createBasketballGameDto: CreateBasketballGameDto) {
-    return 'This action adds a new basketballGame';
+  private readonly logger = new Logger(BasketballGameService.name);
+
+  constructor(
+    @InjectRepository(BasketballGame)
+    private readonly repository: Repository<BasketballGame>,
+  ) {}
+
+  async create(createBasketballGameDto: CreateBasketballGameDto) {
+    return await this.repository.save(createBasketballGameDto);
   }
 
-  findAll() {
-    return `This action returns all basketballGame`;
+  async findAll() {
+    return await this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} basketballGame`;
+  async findOne(id: number) {
+    return await this.repository.findOne({ where: { id: id } });
   }
 
-  update(id: number, updateBasketballGameDto: UpdateBasketballGameDto) {
-    return `This action updates a #${id} basketballGame`;
+  async update(id: number, updateBasketballGameDto: UpdateBasketballGameDto) {
+    return await this.repository.update(id, updateBasketballGameDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} basketballGame`;
+  async remove(id: number) {
+    return await this.repository.delete(id);
   }
 }
