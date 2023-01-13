@@ -27,6 +27,7 @@ export class BasketballGameService {
 
     return await this.repository.find({
       where: { finishAt: MoreThan(targetTime) },
+      relations: ['scores'],
     });
   }
 

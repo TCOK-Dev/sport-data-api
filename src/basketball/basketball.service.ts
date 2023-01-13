@@ -62,6 +62,16 @@ export class BasketballService {
             const isNBA = game.quarter?.[1] === 'Q';
             const isCG = game.quarter?.[1] === 'H';
 
+            const playedTime = isNBA
+              ? // quarter 12min * 4
+                (toNumber(game.quarter?.[0]) - 1) * 720 +
+                (720 - toNumber(game.clock))
+              : isCG
+              ? // half 20min * 2
+                (toNumber(game.quarter?.[0]) - 1) * 1200 +
+                (1200 - toNumber(game.clock))
+              : 0;
+
             const finishAt = new Date();
             finishAt.setSeconds(
               finishAt.getSeconds() +
@@ -82,9 +92,15 @@ export class BasketballService {
                     ...existGame,
                     ...game,
                     finishAt: finishAt,
+                    playedTime: playedTime,
                     league: existLeague,
                   }
-                : { ...game, finishAt: finishAt, league: existLeague },
+                : {
+                    ...game,
+                    finishAt: finishAt,
+                    playedTime: playedTime,
+                    league: existLeague,
+                  },
             );
 
             if (existGame) {
@@ -119,6 +135,7 @@ export class BasketballService {
                 } else {
                   await queryRunner.manager.save(BasketballGameScore, {
                     ...score,
+                    playedTime: playedTime,
                     game: updatedGame,
                   });
                 }

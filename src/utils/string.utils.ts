@@ -1,4 +1,4 @@
-export const toNumber = (str = '') => {
+export const toNumber = (str: any) => {
   const n = Number(String(str).replace(/[^0-9.-]/g, ''));
   return Boolean(n) ? n : 0;
 };

@@ -16,6 +16,9 @@ export class BasketballGameScore {
   clock: number;
 
   @Column({ nullable: true })
+  playedTime: number;
+
+  @Column({ nullable: true })
   awayTeam: string;
 
   @Column({ nullable: true })
