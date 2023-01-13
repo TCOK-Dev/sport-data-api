@@ -103,42 +103,40 @@ export class BasketballService {
                   },
             );
 
-            if (existGame) {
-              for (
-                let scoreIndex = 0;
-                scoreIndex < game.scores.length;
-                scoreIndex++
-              ) {
-                const score = queryRunner.manager.create(
-                  BasketballGameScore,
-                  game.scores[scoreIndex],
-                );
+            for (
+              let scoreIndex = 0;
+              scoreIndex < game.scores.length;
+              scoreIndex++
+            ) {
+              const score = queryRunner.manager.create(
+                BasketballGameScore,
+                game.scores[scoreIndex],
+              );
 
-                const existScore = await queryRunner.manager.findOne(
-                  BasketballGameScore,
-                  {
-                    where: {
-                      title: league.title,
-                      awayTeam: game.awayTeam,
-                      homeTeam: game.homeTeam,
-                      awayScore: game.awayScore,
-                      homeScore: game.homeScore,
-                      awaySpread: game.awaySpread,
-                      homeSpread: game.homeSpread,
-                      awayOverUnder: game.awayOverUnder,
-                      homeOverUnder: game.homeOverUnder,
-                    },
+              const existScore = await queryRunner.manager.findOne(
+                BasketballGameScore,
+                {
+                  where: {
+                    title: league.title,
+                    awayTeam: game.awayTeam,
+                    homeTeam: game.homeTeam,
+                    awayScore: game.awayScore,
+                    homeScore: game.homeScore,
+                    awaySpread: game.awaySpread,
+                    homeSpread: game.homeSpread,
+                    awayOverUnder: game.awayOverUnder,
+                    homeOverUnder: game.homeOverUnder,
                   },
-                );
+                },
+              );
 
-                if (existScore) {
-                } else {
-                  await queryRunner.manager.save(BasketballGameScore, {
-                    ...score,
-                    playedTime: playedTime,
-                    game: updatedGame,
-                  });
-                }
+              if (existScore) {
+              } else {
+                await queryRunner.manager.save(BasketballGameScore, {
+                  ...score,
+                  playedTime: playedTime,
+                  game: updatedGame,
+                });
               }
             }
           }
