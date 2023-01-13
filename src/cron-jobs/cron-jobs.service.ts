@@ -54,10 +54,10 @@ export class CronJobsService {
     await this.page?.waitForSelector('.happening-now-bucket');
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS, { name: GET_DATA })
+  @Cron(CronExpression.EVERY_5_SECONDS, { name: GET_DATA })
   async grabSports() {
     this.logger.warn(
-      'Cron Job<Get Sport Data> is started. This will run every 10 seconds',
+      'Cron Job<Get Sport Data> is started. This will run every 5 seconds',
     );
 
     const basketballData = await this.getBasketball();
