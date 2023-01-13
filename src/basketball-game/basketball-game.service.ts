@@ -23,7 +23,7 @@ export class BasketballGameService {
   }
 
   async findLive() {
-    return await this.repository.find({ where: { clock: MoreThan(0) } });
+    return await this.repository.find({ where: { clock: MoreThan(5) } });
   }
 
   async findOne(id: number) {
