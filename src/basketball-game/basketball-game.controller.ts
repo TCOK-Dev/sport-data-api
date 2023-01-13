@@ -25,6 +25,11 @@ export class BasketballGameController {
     return await this.basketballGameService.findAll();
   }
 
+  @Get('live')
+  async findLive() {
+    return await this.basketballGameService.findLive();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.basketballGameService.findOne(+id);
