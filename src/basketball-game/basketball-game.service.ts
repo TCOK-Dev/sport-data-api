@@ -24,7 +24,7 @@ export class BasketballGameService {
 
   async findLive() {
     const beforeSeconds = new Date();
-    beforeSeconds.setSeconds(beforeSeconds.getSeconds() + 10);
+    beforeSeconds.setSeconds(beforeSeconds.getSeconds() - 10);
 
     return await this.repository.find({
       where: { updatedAt: MoreThan(beforeSeconds) },
