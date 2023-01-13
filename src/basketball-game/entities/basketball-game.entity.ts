@@ -8,6 +8,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  AfterLoad,
 } from 'typeorm';
 
 @Entity()
@@ -66,4 +67,14 @@ export class BasketballGame {
 
   @OneToMany(() => BasketballGameScore, (score) => score.game)
   scores: BasketballGameScore[];
+
+  isFinished: boolean;
+
+  @AfterLoad()
+  getIsFinished() {
+    const finishTime = this.updatedAt;
+    finishTime.setSeconds(finishTime.getSeconds() + this.clock);
+
+    return finishTime < new Date();
+  }
 }
