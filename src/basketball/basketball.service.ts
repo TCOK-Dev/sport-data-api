@@ -121,7 +121,10 @@ export class BasketballService {
   }
 
   async findOne(id: number) {
-    return await this.basketballRepository.findOne({ where: { id: id } });
+    return await this.basketballRepository.findOne({
+      where: { id: id },
+      relations: ['games.scores'],
+    });
   }
 
   async update(id: number, updateBasketballDto: UpdateBasketballDto) {
