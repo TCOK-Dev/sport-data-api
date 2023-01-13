@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BasketballGameScore } from 'src/basketball-game-score/entities/basketball-game-score.entity';
 import { BasketballGame } from 'src/basketball-game/entities/basketball-game.entity';
+import { toNumber } from 'src/utils/string.utils';
 import { DataSource, Repository } from 'typeorm';
 import { CreateBasketballDto } from './dto/create-basketball.dto';
 import { UpdateBasketballDto } from './dto/update-basketball.dto';
@@ -58,8 +59,20 @@ export class BasketballService {
               },
             );
 
+            const isNBA = game.quarter[1] === 'Q';
+            const isCG = game.quarter[1] === 'H';
+
             const finishAt = new Date();
-            finishAt.setSeconds(finishAt.getSeconds() + game.clock);
+            finishAt.setSeconds(
+              finishAt.getSeconds() +
+                (isNBA
+                  ? // quarter 12min * 4
+                    (4 - toNumber(game.quarter[0])) * 720 + game.clock
+                  : isCG
+                  ? // half 20min * 2
+                    (2 - toNumber(game.quarter[0])) * 1200 + game.clock
+                  : 0),
+            );
 
             const updatedGame = await queryRunner.manager.save(
               BasketballGame,
