@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import { CreateBasketballGameScoreDto } from 'src/basketball-game-score/dto/create-basketball-game-score.dto';
 import { BasketballGameService } from 'src/basketball-game/basketball-game.service';
 import { CreateBasketballGameDto } from 'src/basketball-game/dto/create-basketball-game.dto';
 import { BasketballService } from 'src/basketball/basketball.service';
@@ -67,7 +66,7 @@ export class CronJobsService {
         title: dataItem.title,
         games: basketballData
           .filter((item) => item.title === dataItem.title)
-          .map((gameItem, gameItemIndex, leagueGames) => {
+          .map((gameItem) => {
             return {
               title: gameItem.title,
               quarter: gameItem.quarter,
@@ -80,28 +79,7 @@ export class CronJobsService {
               homeSpread: gameItem.homeSpread,
               awayOverUnder: gameItem.awayOverUnder,
               homeOverUnder: gameItem.homeOverUnder,
-              scores: leagueGames
-                .filter(
-                  (item) =>
-                    item.awayTeam === gameItem.awayTeam &&
-                    item.homeTeam == gameItem.homeTeam,
-                )
-                .map(
-                  (item) =>
-                    ({
-                      title: item.title,
-                      quarter: item.quarter,
-                      clock: item.clock,
-                      awayTeam: item.awayTeam,
-                      homeTeam: item.homeTeam,
-                      awayScore: item.awayScore,
-                      homeScore: item.homeScore,
-                      awaySpread: item.awaySpread,
-                      homeSpread: item.homeSpread,
-                      awayOverUnder: item.awayOverUnder,
-                      homeOverUnder: item.homeOverUnder,
-                    } as unknown as CreateBasketballGameScoreDto),
-                ),
+              scores: [],
             } as unknown as CreateBasketballGameDto;
           }),
       };
