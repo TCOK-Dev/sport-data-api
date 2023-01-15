@@ -64,7 +64,7 @@ export class CronJobsService {
     const leagues = basketballData.reduce((ret, curItem) => {
       const matchIndex = ret.findIndex((item) => item.title === curItem.title);
 
-      if (matchIndex < 0) {
+      if (matchIndex >= 0) {
         return ret;
       }
 
