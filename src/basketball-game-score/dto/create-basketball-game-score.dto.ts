@@ -1,4 +1,5 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { CreateBasketballGameDto } from 'src/basketball-game/dto/create-basketball-game.dto';
 
 export class CreateBasketballGameScoreDto {
   @IsString()
@@ -45,5 +46,6 @@ export class CreateBasketballGameScoreDto {
   @IsOptional()
   homeOverUnder?: string;
 
-  // game: CreateBasketballGameDto;
+  @IsOptional()
+  game?: CreateBasketballGameDto;
 }
