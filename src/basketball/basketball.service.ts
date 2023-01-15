@@ -37,111 +37,119 @@ export class BasketballService {
           where: { title: league.title },
         });
 
-        if (existLeague) {
+        if (!existLeague) {
+          await queryRunner.manager.save(Basketball, league);
+        }
+
+        const updatedLeague = await queryRunner.manager.findOne(Basketball, {
+          where: { title: league.title },
+        });
+
+        for (let gameIndex = 0; gameIndex < league.games.length; gameIndex++) {
+          const game = queryRunner.manager.create(
+            BasketballGame,
+            league.games[gameIndex],
+          );
+
+          const existGame = await queryRunner.manager.findOne(BasketballGame, {
+            where: {
+              title: league.title,
+              awayTeam: game.awayTeam,
+              homeTeam: game.homeTeam,
+            },
+          });
+
+          const isNBA = game.quarter?.[1] === 'Q';
+          const isCG = game.quarter?.[1] === 'H';
+
+          const playedTime = isNBA
+            ? // quarter 12min * 4
+              (toNumber(game.quarter?.[0]) - 1) * 720 +
+              (720 - toNumber(game.clock))
+            : isCG
+            ? // half 20min * 2
+              (toNumber(game.quarter?.[0]) - 1) * 1200 +
+              (1200 - toNumber(game.clock))
+            : 0;
+
+          const finishAt = new Date();
+          finishAt.setSeconds(
+            finishAt.getSeconds() +
+              (isNBA
+                ? // quarter 12min * 4
+                  (4 - toNumber(game.quarter?.[0])) * 720 + game.clock
+                : isCG
+                ? // half 20min * 2
+                  (2 - toNumber(game.quarter?.[0])) * 1200 + game.clock
+                : 0) +
+              10,
+          );
+
+          await queryRunner.manager.save(
+            BasketballGame,
+            existGame
+              ? {
+                  ...existGame,
+                  ...game,
+                  finishAt: finishAt,
+                  playedTime: playedTime,
+                  league: updatedLeague,
+                }
+              : {
+                  ...game,
+                  finishAt: finishAt,
+                  playedTime: playedTime,
+                  league: updatedLeague,
+                },
+          );
+
+          const updatedGame = await queryRunner.manager.findOne(
+            BasketballGame,
+            {
+              where: {
+                title: league.title,
+                awayTeam: game.awayTeam,
+                homeTeam: game.homeTeam,
+              },
+            },
+          );
+
           for (
-            let gameIndex = 0;
-            gameIndex < league.games.length;
-            gameIndex++
+            let scoreIndex = 0;
+            scoreIndex < game.scores.length;
+            scoreIndex++
           ) {
-            const game = queryRunner.manager.create(
-              BasketballGame,
-              league.games[gameIndex],
+            const score = queryRunner.manager.create(
+              BasketballGameScore,
+              game.scores[scoreIndex],
             );
 
-            const existGame = await queryRunner.manager.findOne(
-              BasketballGame,
+            const existScore = await queryRunner.manager.findOne(
+              BasketballGameScore,
               {
                 where: {
                   title: league.title,
                   awayTeam: game.awayTeam,
                   homeTeam: game.homeTeam,
+                  awayScore: game.awayScore,
+                  homeScore: game.homeScore,
+                  awaySpread: game.awaySpread,
+                  homeSpread: game.homeSpread,
+                  awayOverUnder: game.awayOverUnder,
+                  homeOverUnder: game.homeOverUnder,
                 },
               },
             );
 
-            const isNBA = game.quarter?.[1] === 'Q';
-            const isCG = game.quarter?.[1] === 'H';
-
-            const playedTime = isNBA
-              ? // quarter 12min * 4
-                (toNumber(game.quarter?.[0]) - 1) * 720 +
-                (720 - toNumber(game.clock))
-              : isCG
-              ? // half 20min * 2
-                (toNumber(game.quarter?.[0]) - 1) * 1200 +
-                (1200 - toNumber(game.clock))
-              : 0;
-
-            const finishAt = new Date();
-            finishAt.setSeconds(
-              finishAt.getSeconds() +
-                (isNBA
-                  ? // quarter 12min * 4
-                    (4 - toNumber(game.quarter?.[0])) * 720 + game.clock
-                  : isCG
-                  ? // half 20min * 2
-                    (2 - toNumber(game.quarter?.[0])) * 1200 + game.clock
-                  : 0) +
-                10,
-            );
-
-            const updatedGame = await queryRunner.manager.save(
-              BasketballGame,
-              existGame
-                ? {
-                    ...existGame,
-                    ...game,
-                    finishAt: finishAt,
-                    playedTime: playedTime,
-                    league: existLeague,
-                  }
-                : {
-                    ...game,
-                    finishAt: finishAt,
-                    playedTime: playedTime,
-                    league: existLeague,
-                  },
-            );
-
-            for (
-              let scoreIndex = 0;
-              scoreIndex < game.scores.length;
-              scoreIndex++
-            ) {
-              const score = queryRunner.manager.create(
-                BasketballGameScore,
-                game.scores[scoreIndex],
-              );
-
-              const existScore = await queryRunner.manager.findOne(
-                BasketballGameScore,
-                {
-                  where: {
-                    title: league.title,
-                    awayTeam: game.awayTeam,
-                    homeTeam: game.homeTeam,
-                    awayScore: game.awayScore,
-                    homeScore: game.homeScore,
-                    awaySpread: game.awaySpread,
-                    homeSpread: game.homeSpread,
-                    awayOverUnder: game.awayOverUnder,
-                    homeOverUnder: game.homeOverUnder,
-                  },
-                },
-              );
-
-              if (existScore) {
-              } else {
-                await queryRunner.manager.save(BasketballGameScore, {
-                  ...score,
-                  playedTime: playedTime,
-                  game: updatedGame,
-                });
-              }
+            if (existScore) {
+            } else {
+              await queryRunner.manager.save(BasketballGameScore, {
+                ...score,
+                playedTime: playedTime,
+                game: updatedGame,
+              });
             }
           }
-        } else {
-          await queryRunner.manager.save(Basketball, league);
         }
       }
       await queryRunner.commitTransaction();
