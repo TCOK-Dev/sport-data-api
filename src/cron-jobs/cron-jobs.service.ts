@@ -61,11 +61,17 @@ export class CronJobsService {
 
     const basketballData = await this.getBasketball();
 
-    const leagues = basketballData.map((dataItem) => {
+    const leagues = basketballData.reduce((ret, curItem) => {
+      const matchIndex = ret.findIndex((item) => item.title === curItem.title);
+
+      if (matchIndex < 0) {
+        return ret;
+      }
+
       const league: CreateBasketballDto = {
-        title: dataItem.title,
+        title: curItem.title,
         games: basketballData
-          .filter((item) => item.title === dataItem.title)
+          .filter((item) => item.title === curItem.title)
           .map((gameItem) => {
             return {
               title: gameItem.title,
@@ -79,13 +85,14 @@ export class CronJobsService {
               homeSpread: gameItem.homeSpread,
               awayOverUnder: gameItem.awayOverUnder,
               homeOverUnder: gameItem.homeOverUnder,
-              scores: [],
             } as unknown as CreateBasketballGameDto;
           }),
       };
 
-      return league;
-    });
+      ret.push(league);
+
+      return ret;
+    }, []);
 
     await this.basketballService.multiSave(leagues);
     this.logger.log(`Saved ${leagues.length} basketball leagues`);
