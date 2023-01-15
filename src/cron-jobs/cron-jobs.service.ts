@@ -67,7 +67,7 @@ export class CronJobsService {
         title: dataItem.title,
         games: basketballData
           .filter((item) => item.title === dataItem.title)
-          .map((gameItem) => {
+          .map((gameItem, gameItemIndex, leagueGames) => {
             return {
               title: gameItem.title,
               quarter: gameItem.quarter,
@@ -80,7 +80,7 @@ export class CronJobsService {
               homeSpread: gameItem.homeSpread,
               awayOverUnder: gameItem.awayOverUnder,
               homeOverUnder: gameItem.homeOverUnder,
-              scores: basketballData
+              scores: leagueGames
                 .filter(
                   (item) =>
                     item.awayTeam === gameItem.awayTeam &&

@@ -110,27 +110,27 @@ export class BasketballService {
               game: updatedGame,
             });
 
-            // const existScore = await queryRunner.manager.findOne(
-            //   BasketballGameScore,
-            //   {
-            //     where: {
-            //       title: score.title,
-            //       awayTeam: score.awayTeam,
-            //       homeTeam: score.homeTeam,
-            //       awayScore: score.awayScore,
-            //       homeScore: score.homeScore,
-            //       awaySpread: score.awaySpread,
-            //       homeSpread: score.homeSpread,
-            //       awayOverUnder: score.awayOverUnder,
-            //       homeOverUnder: score.homeOverUnder,
-            //     },
-            //   },
-            // );
+            const existScore = await queryRunner.manager.findOne(
+              BasketballGameScore,
+              {
+                where: {
+                  title: score.title,
+                  awayTeam: score.awayTeam,
+                  homeTeam: score.homeTeam,
+                  awayScore: score.awayScore,
+                  homeScore: score.homeScore,
+                  awaySpread: score.awaySpread,
+                  homeSpread: score.homeSpread,
+                  awayOverUnder: score.awayOverUnder,
+                  homeOverUnder: score.homeOverUnder,
+                },
+              },
+            );
 
-            // if (existScore) {
-            // } else {
-            await queryRunner.manager.save(BasketballGameScore, score);
-            // }
+            if (existScore) {
+            } else {
+              await queryRunner.manager.save(BasketballGameScore, score);
+            }
           }
         }
       }
