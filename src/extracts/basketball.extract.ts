@@ -70,17 +70,17 @@ export const extractLiveBasketball = async (browser: Browser, page: Page) => {
           };
 
           return {
-            title: title,
-            quarter: strQuarter,
+            title: (title ?? '').trim(),
+            quarter: (strQuarter ?? '').trim(),
             clock: strClock2num(strClock),
-            awayTeam: teams?.[0] ?? '',
-            homeTeam: teams?.[1] ?? '',
+            awayTeam: (teams?.[0] ?? '').trim(),
+            homeTeam: (teams?.[1] ?? '').trim(),
             awayScore: toNumber(scores?.[0] ?? ''),
             homeScore: toNumber(scores?.[1] ?? ''),
-            awaySpread: spreads?.[0] ?? '',
-            homeSpread: spreads?.[1] ?? '',
-            awayOverUnder: totals?.[0] ?? '',
-            homeOverUnder: totals?.[1] ?? '',
+            awaySpread: (spreads?.[0] ?? '').trim(),
+            homeSpread: (spreads?.[1] ?? '').trim(),
+            awayOverUnder: (totals?.[0] ?? '').trim(),
+            homeOverUnder: (totals?.[1] ?? '').trim(),
           };
         },
       );

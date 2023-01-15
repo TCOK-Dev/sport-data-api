@@ -123,10 +123,7 @@ export class BasketballService {
           );
 
           if (!existScore) {
-            // await queryRunner.manager.save(BasketballGameScore, score);
-            const sql = `INSERT INTO basketball_game_score (title, awayTeam, homeTeam, awayScore, homeScore, awaySpread, homeSpread, awayOverUnder, homeOverUnder, gameId) VALUES ('${score.title}', '${score.awayTeam}', '${score.homeTeam}', ${score.awayScore}, ${score.homeScore}, '${score.awaySpread}', '${score.homeSpread}', '${score.awayOverUnder}', '${score.homeOverUnder}', ${updatedGame.id});`;
-            console.log(sql);
-            await queryRunner.query(sql);
+            await queryRunner.manager.save(BasketballGameScore, score);
           }
         }
       }
