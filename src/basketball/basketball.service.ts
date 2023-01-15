@@ -129,7 +129,10 @@ export class BasketballService {
 
             if (existScore) {
             } else {
-              await queryRunner.manager.save(BasketballGameScore, score);
+              await queryRunner.manager.save(BasketballGameScore, {
+                ...score,
+                game: updatedGame,
+              });
             }
           }
         }
