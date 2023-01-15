@@ -132,6 +132,7 @@ export class BasketballService {
               await queryRunner.manager.save(BasketballGameScore, {
                 ...score,
                 game: updatedGame,
+                gameId: updatedGame.id,
               });
             }
           }
