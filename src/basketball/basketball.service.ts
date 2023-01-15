@@ -102,7 +102,7 @@ export class BasketballService {
           const score = queryRunner.manager.create(BasketballGameScore, {
             ...game,
             playedTime: playedTime,
-            game: updatedGame,
+            game: existGame ? existGame : updatedGame,
           });
 
           const existScore = await queryRunner.manager.findOne(
