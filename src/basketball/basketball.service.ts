@@ -113,16 +113,18 @@ export class BasketballService {
               },
             },
           );
+          console.log(updatedGame);
 
           for (
             let scoreIndex = 0;
             scoreIndex < game.scores.length;
             scoreIndex++
           ) {
-            const score = queryRunner.manager.create(
-              BasketballGameScore,
-              game.scores[scoreIndex],
-            );
+            const score = queryRunner.manager.create(BasketballGameScore, {
+              ...game.scores[scoreIndex],
+              playedTime: playedTime,
+              game: updatedGame,
+            });
 
             const existScore = await queryRunner.manager.findOne(
               BasketballGameScore,
@@ -143,11 +145,7 @@ export class BasketballService {
 
             if (existScore) {
             } else {
-              await queryRunner.manager.save(BasketballGameScore, {
-                ...score,
-                playedTime: playedTime,
-                game: updatedGame,
-              });
+              await queryRunner.manager.save(BasketballGameScore, score);
             }
           }
         }
