@@ -34,16 +34,9 @@ export class BasketballService {
           where: { title: league.title },
         });
 
-        if (!existLeague) {
-          await this.dataSource.manager.save(Basketball, league);
-        }
-
-        const updatedLeague = await this.dataSource.manager.findOne(
-          Basketball,
-          {
-            where: { title: league.title },
-          },
-        );
+        const updatedLeague = existLeague
+          ? existLeague
+          : await this.dataSource.manager.save(Basketball, league);
 
         for (let gameIndex = 0; gameIndex < league.games.length; gameIndex++) {
           const game = this.dataSource.manager.create(
@@ -88,7 +81,7 @@ export class BasketballService {
               10,
           );
 
-          await this.dataSource.manager.save(
+          const updatedGame = await this.dataSource.manager.save(
             BasketballGame,
             existGame
               ? {
@@ -104,17 +97,6 @@ export class BasketballService {
                   playedTime: playedTime,
                   league: updatedLeague,
                 },
-          );
-
-          const updatedGame = await this.dataSource.manager.findOne(
-            BasketballGame,
-            {
-              where: {
-                title: league.title,
-                awayTeam: game.awayTeam,
-                homeTeam: game.homeTeam,
-              },
-            },
           );
 
           for (
