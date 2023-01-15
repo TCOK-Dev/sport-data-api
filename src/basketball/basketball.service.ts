@@ -33,13 +33,13 @@ export class BasketballService {
           Basketball,
           data[leagueIndex],
         );
-        const existLeague = await queryRunner.manager.findOne(Basketball, {
-          where: { title: league.title },
-        });
+        // const existLeague = await queryRunner.manager.findOne(Basketball, {
+        //   where: { title: league.title },
+        // });
 
-        const updatedLeague = existLeague
-          ? existLeague
-          : await queryRunner.manager.save(Basketball, league);
+        // const updatedLeague = existLeague
+        //   ? existLeague
+        //   : await queryRunner.manager.save(Basketball, league);
 
         for (let gameIndex = 0; gameIndex < league.games.length; gameIndex++) {
           const game = queryRunner.manager.create(
@@ -89,13 +89,13 @@ export class BasketballService {
                   ...game,
                   finishAt: finishAt,
                   playedTime: playedTime,
-                  league: updatedLeague,
+                  // league: updatedLeague,
                 }
               : {
                   ...game,
                   finishAt: finishAt,
                   playedTime: playedTime,
-                  league: updatedLeague,
+                  // league: updatedLeague,
                 },
           );
 
