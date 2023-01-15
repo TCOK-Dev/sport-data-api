@@ -123,11 +123,10 @@ export class BasketballService {
           );
 
           if (!existScore) {
-            const ret = await queryRunner.manager.save(
-              BasketballGameScore,
-              score,
+            // await queryRunner.manager.save(BasketballGameScore, score);
+            await queryRunner.query(
+              `INSERT INTO basketball_game_score (title, awayTeam, homeTeam, awayScore, homeScore, awaySpread, homeSpread, awayOverUnder, homeOverUnder, gameId) VALUES (${score.title}, ${score.awayTeam}, ${score.homeTeam}, ${score.awayScore}, ${score.homeScore}, ${score.awaySpread}, ${score.homeSpread}, ${score.awayOverUnder}, ${score.homeOverUnder}, ${updatedGame.id})`,
             );
-            console.log(ret.game.id);
           }
         }
       }
