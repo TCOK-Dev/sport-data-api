@@ -32,7 +32,10 @@ export class BasketballGameService {
   }
 
   async findOne(id: number) {
-    return await this.repository.findOne({ where: { id: id } });
+    return await this.repository.findOne({
+      where: { id: id },
+      relations: ['scores'],
+    });
   }
 
   async update(id: number, updateBasketballGameDto: UpdateBasketballGameDto) {
